@@ -168,6 +168,10 @@ public class GraphQLVisitorBase extends PsiElementVisitor {
     // visitNamedTypeExtension(o);
   }
 
+  public void visitListNullability(@NotNull GraphQLListNullability o) {
+    visitElement(o);
+  }
+
   public void visitListType(@NotNull GraphQLListType o) {
     visitType(o);
   }
@@ -178,6 +182,14 @@ public class GraphQLVisitorBase extends PsiElementVisitor {
 
   public void visitNullValue(@NotNull GraphQLNullValue o) {
     visitValue(o);
+  }
+
+  public void visitNullability(@NotNull GraphQLNullability o) {
+    visitElement(o);
+  }
+
+  public void visitNullabilityDesignator(@NotNull GraphQLNullabilityDesignator o) {
+    visitElement(o);
   }
 
   public void visitObjectField(@NotNull GraphQLObjectField o) {

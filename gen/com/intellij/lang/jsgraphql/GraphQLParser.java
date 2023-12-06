@@ -666,7 +666,7 @@ public class GraphQLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // alias? identifier arguments? directives? selectionSet?
+  // alias? identifier arguments? nullability? directives? selectionSet?
   public static boolean field(PsiBuilder builder, int level) {
     if (!recursion_guard_(builder, level, "field")) return false;
     boolean result;
@@ -676,6 +676,7 @@ public class GraphQLParser implements PsiParser, LightPsiParser {
     result = result && field_2(builder, level + 1);
     result = result && field_3(builder, level + 1);
     result = result && field_4(builder, level + 1);
+    result = result && field_5(builder, level + 1);
     exit_section_(builder, level, marker, result, false, null);
     return result;
   }
@@ -694,16 +695,23 @@ public class GraphQLParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // directives?
+  // nullability?
   private static boolean field_3(PsiBuilder builder, int level) {
     if (!recursion_guard_(builder, level, "field_3")) return false;
+    nullability(builder, level + 1);
+    return true;
+  }
+
+  // directives?
+  private static boolean field_4(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "field_4")) return false;
     directives(builder, level + 1);
     return true;
   }
 
   // selectionSet?
-  private static boolean field_4(PsiBuilder builder, int level) {
-    if (!recursion_guard_(builder, level, "field_4")) return false;
+  private static boolean field_5(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "field_5")) return false;
     selectionSet(builder, level + 1);
     return true;
   }
@@ -1232,6 +1240,27 @@ public class GraphQLParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // BRACKET_L nullability? BRACKET_R
+  public static boolean listNullability(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "listNullability")) return false;
+    if (!nextTokenIs(builder, BRACKET_L)) return false;
+    boolean result;
+    Marker marker = enter_section_(builder);
+    result = consumeToken(builder, BRACKET_L);
+    result = result && listNullability_1(builder, level + 1);
+    result = result && consumeToken(builder, BRACKET_R);
+    exit_section_(builder, marker, LIST_NULLABILITY, result);
+    return result;
+  }
+
+  // nullability?
+  private static boolean listNullability_1(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "listNullability_1")) return false;
+    nullability(builder, level + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
   // '[' type ']'
   public static boolean listType(PsiBuilder builder, int level) {
     if (!recursion_guard_(builder, level, "listType")) return false;
@@ -1286,6 +1315,49 @@ public class GraphQLParser implements PsiParser, LightPsiParser {
     boolean result;
     Marker marker = enter_section_(builder, level, _NONE_, NULL_VALUE, "<null value>");
     result = consumeToken(builder, "null");
+    exit_section_(builder, level, marker, result, false, null);
+    return result;
+  }
+
+  /* ********************************************************** */
+  // (listNullability nullabilityDesignator?) | nullabilityDesignator
+  public static boolean nullability(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "nullability")) return false;
+    boolean result;
+    Marker marker = enter_section_(builder, level, _NONE_, NULLABILITY, "<nullability>");
+    result = nullability_0(builder, level + 1);
+    if (!result) result = nullabilityDesignator(builder, level + 1);
+    exit_section_(builder, level, marker, result, false, null);
+    return result;
+  }
+
+  // listNullability nullabilityDesignator?
+  private static boolean nullability_0(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "nullability_0")) return false;
+    boolean result;
+    Marker marker = enter_section_(builder);
+    result = listNullability(builder, level + 1);
+    result = result && nullability_0_1(builder, level + 1);
+    exit_section_(builder, marker, null, result);
+    return result;
+  }
+
+  // nullabilityDesignator?
+  private static boolean nullability_0_1(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "nullability_0_1")) return false;
+    nullabilityDesignator(builder, level + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // BANG | QUESTION_MARK
+  public static boolean nullabilityDesignator(PsiBuilder builder, int level) {
+    if (!recursion_guard_(builder, level, "nullabilityDesignator")) return false;
+    if (!nextTokenIs(builder, "<nullability designator>", BANG, QUESTION_MARK)) return false;
+    boolean result;
+    Marker marker = enter_section_(builder, level, _NONE_, NULLABILITY_DESIGNATOR, "<nullability designator>");
+    result = consumeToken(builder, BANG);
+    if (!result) result = consumeToken(builder, QUESTION_MARK);
     exit_section_(builder, level, marker, result, false, null);
     return result;
   }

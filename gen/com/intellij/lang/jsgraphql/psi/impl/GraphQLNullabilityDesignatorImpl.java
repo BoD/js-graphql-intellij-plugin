@@ -10,14 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.intellij.lang.jsgraphql.psi.GraphQLElementTypes.*;
 import com.intellij.lang.jsgraphql.psi.*;
 
-public class GraphQLOperationTypeImpl extends GraphQLElementImpl implements GraphQLOperationType {
+public class GraphQLNullabilityDesignatorImpl extends GraphQLElementImpl implements GraphQLNullabilityDesignator {
 
-  public GraphQLOperationTypeImpl(ASTNode node) {
+  public GraphQLNullabilityDesignatorImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GraphQLVisitorBase visitor) {
-    visitor.visitOperationType(this);
+    visitor.visitNullabilityDesignator(this);
   }
 
   @Override

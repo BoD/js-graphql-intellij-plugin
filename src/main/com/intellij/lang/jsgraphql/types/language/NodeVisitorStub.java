@@ -141,6 +141,10 @@ public class NodeVisitorStub implements NodeVisitor {
         return visitValue(node, context);
     }
 
+    public TraversalControl visitNullabilityDesignator(NullabilityDesignator node, TraverserContext<Node> context) {
+        return visitNode(node, context);
+    }
+
     @Override
     public TraversalControl visitObjectField(ObjectField node, TraverserContext<Node> context) {
         return visitNode(node, context);

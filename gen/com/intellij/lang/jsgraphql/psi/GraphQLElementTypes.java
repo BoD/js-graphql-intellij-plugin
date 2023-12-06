@@ -44,8 +44,11 @@ public interface GraphQLElementTypes {
   IElementType INTERFACE_TYPE_DEFINITION = new GraphQLCompositeElementType("INTERFACE_TYPE_DEFINITION");
   IElementType INTERFACE_TYPE_EXTENSION_DEFINITION = new GraphQLCompositeElementType("INTERFACE_TYPE_EXTENSION_DEFINITION");
   IElementType INT_VALUE = new GraphQLCompositeElementType("INT_VALUE");
+  IElementType LIST_NULLABILITY = new GraphQLCompositeElementType("LIST_NULLABILITY");
   IElementType LIST_TYPE = new GraphQLCompositeElementType("LIST_TYPE");
   IElementType NON_NULL_TYPE = new GraphQLCompositeElementType("NON_NULL_TYPE");
+  IElementType NULLABILITY = new GraphQLCompositeElementType("NULLABILITY");
+  IElementType NULLABILITY_DESIGNATOR = new GraphQLCompositeElementType("NULLABILITY_DESIGNATOR");
   IElementType NULL_VALUE = new GraphQLCompositeElementType("NULL_VALUE");
   IElementType OBJECT_FIELD = new GraphQLCompositeElementType("OBJECT_FIELD");
   IElementType OBJECT_TYPE_DEFINITION = new GraphQLCompositeElementType("OBJECT_TYPE_DEFINITION");
@@ -116,6 +119,7 @@ public interface GraphQLElementTypes {
   IElementType PAREN_R = new GraphQLTokenType(")");
   IElementType PIPE = new GraphQLTokenType("|");
   IElementType QUERY_KEYWORD = new GraphQLTokenType("query");
+  IElementType QUESTION_MARK = new GraphQLTokenType("?");
   IElementType REGULAR_STRING_PART = new GraphQLTokenType("REGULAR_STRING_PART");
   IElementType REPEATABLE_KEYWORD = new GraphQLTokenType("repeatable");
   IElementType SCALAR_KEYWORD = new GraphQLTokenType("scalar");
@@ -239,11 +243,20 @@ public interface GraphQLElementTypes {
       else if (type == INT_VALUE) {
         return new GraphQLIntValueImpl(node);
       }
+      else if (type == LIST_NULLABILITY) {
+        return new GraphQLListNullabilityImpl(node);
+      }
       else if (type == LIST_TYPE) {
         return new GraphQLListTypeImpl(node);
       }
       else if (type == NON_NULL_TYPE) {
         return new GraphQLNonNullTypeImpl(node);
+      }
+      else if (type == NULLABILITY) {
+        return new GraphQLNullabilityImpl(node);
+      }
+      else if (type == NULLABILITY_DESIGNATOR) {
+        return new GraphQLNullabilityDesignatorImpl(node);
       }
       else if (type == NULL_VALUE) {
         return new GraphQLNullValueImpl(node);

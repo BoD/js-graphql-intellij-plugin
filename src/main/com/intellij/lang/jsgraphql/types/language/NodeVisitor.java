@@ -72,6 +72,8 @@ public interface NodeVisitor {
 
     TraversalControl visitNullValue(NullValue node, TraverserContext<Node> data);
 
+    TraversalControl visitNullabilityDesignator(NullabilityDesignator node, TraverserContext<Node> data);
+
     TraversalControl visitObjectField(ObjectField node, TraverserContext<Node> data);
 
     TraversalControl visitObjectTypeDefinition(ObjectTypeDefinition node, TraverserContext<Node> data);

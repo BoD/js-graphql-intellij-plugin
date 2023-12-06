@@ -14,6 +14,9 @@ public interface GraphQLField extends GraphQLDirectivesAware, GraphQLNamedElemen
   GraphQLArguments getArguments();
 
   @Nullable
+  GraphQLNullability getNullability();
+
+  @Nullable
   GraphQLSelectionSet getSelectionSet();
 
   @NotNull

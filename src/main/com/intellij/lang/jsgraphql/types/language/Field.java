@@ -50,6 +50,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
     private final ImmutableList<Argument> arguments;
     private final ImmutableList<Directive> directives;
     private final SelectionSet selectionSet;
+    private final Nullability nullability;
 
     public static final String CHILD_ARGUMENTS = "arguments";
     public static final String CHILD_DIRECTIVES = "directives";
@@ -62,6 +63,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
                     List<Argument> arguments,
                     List<Directive> directives,
                     SelectionSet selectionSet,
+                    Nullability nullability,
                     SourceLocation sourceLocation,
                     List<Comment> comments,
                     IgnoredChars ignoredChars,
@@ -74,6 +76,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
         this.arguments = ImmutableList.copyOf(arguments);
         this.directives = ImmutableList.copyOf(directives);
         this.selectionSet = selectionSet;
+        this.nullability = nullability;
     }
 
 
@@ -83,7 +86,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
      * @param name of the field
      */
     public Field(String name) {
-        this(name, null, emptyList(), emptyList(), null, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
+        this(name, null, emptyList(), emptyList(), null, null, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
     }
 
     /**
@@ -93,7 +96,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
      * @param arguments to the field
      */
     public Field(String name, List<Argument> arguments) {
-        this(name, null, arguments, emptyList(), null, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
+        this(name, null, arguments, emptyList(), null, null, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
     }
 
     /**
@@ -106,7 +109,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
     public Field(String name,
                  List<Argument> arguments,
                  SelectionSet selectionSet) {
-        this(name, null, arguments, emptyList(), selectionSet, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
+        this(name, null, arguments, emptyList(), selectionSet, null, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
     }
 
     /**
@@ -116,7 +119,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
      * @param selectionSet of the field
      */
     public Field(String name, SelectionSet selectionSet) {
-        this(name, null, emptyList(), emptyList(), selectionSet, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
+        this(name, null, emptyList(), emptyList(), selectionSet, null, null, emptyList(), IgnoredChars.EMPTY, emptyMap(), null, null);
     }
 
     @Override
@@ -175,6 +178,10 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
         return selectionSet;
     }
 
+    public Nullability getNullability() {
+        return nullability;
+    }
+
 
     @Override
     public boolean isEqualTo(Node o) {
@@ -197,6 +204,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
             deepCopy(arguments),
             deepCopy(directives),
             deepCopy(selectionSet),
+            nullability.deepCopy(),
             getSourceLocation(),
             getComments(),
             getIgnoredChars(),
@@ -214,6 +222,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
             ", arguments=" + arguments +
             ", directives=" + directives +
             ", selectionSet=" + selectionSet +
+            ", nullability=" + nullability +
             '}';
     }
 
@@ -248,6 +257,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
         private ImmutableList<Argument> arguments = emptyList();
         private ImmutableList<Directive> directives = emptyList();
         private SelectionSet selectionSet;
+        private Nullability nullability;
         private IgnoredChars ignoredChars = IgnoredChars.EMPTY;
         private ImmutableMap<String, String> additionalData = emptyMap();
         private @Nullable PsiElement element;
@@ -264,6 +274,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
             this.arguments = ImmutableList.copyOf(existing.getArguments());
             this.directives = ImmutableList.copyOf(existing.getDirectives());
             this.selectionSet = existing.getSelectionSet();
+            this.nullability = existing.getNullability();
             this.ignoredChars = existing.getIgnoredChars();
             this.additionalData = copyOf(existing.getAdditionalData());
             this.element = existing.getElement();
@@ -312,6 +323,11 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
             return this;
         }
 
+        public Builder nullability(Nullability nullability) {
+            this.nullability = nullability;
+            return this;
+        }
+
         public Builder ignoredChars(IgnoredChars ignoredChars) {
             this.ignoredChars = ignoredChars;
             return this;
@@ -339,7 +355,7 @@ public class Field extends AbstractNode<Field> implements Selection<Field>, Sele
 
 
         public Field build() {
-            return new Field(name, alias, arguments, directives, selectionSet, sourceLocation, comments, ignoredChars, additionalData, element, sourceNodes);
+            return new Field(name, alias, arguments, directives, selectionSet, nullability, sourceLocation, comments, ignoredChars, additionalData, element, sourceNodes);
         }
     }
 }

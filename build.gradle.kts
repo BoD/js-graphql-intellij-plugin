@@ -63,6 +63,12 @@ kotlin {
     }
 }
 
+grammarKit {
+    jflexRelease.set("1.9.1")
+    grammarKitRelease.set("2022.3.1")
+//    intellijRelease.set("203.7717.81")
+}
+
 dependencies {
     implementation("commons-io:commons-io:2.7")
     implementation("com.atlassian.commonmark:commonmark:0.12.1")
@@ -111,6 +117,21 @@ tasks {
             apiVersion = "1.7"
             freeCompilerArgs = listOf("-Xjvm-default=all")
         }
+    }
+
+    generateLexer {
+        sourceFile.set(file("src/grammars/GraphQLLexer.flex"))
+        targetDir.set("gen/com/intellij/lang/jsgraphql")
+        targetClass.set("GraphQLLexer")
+        purgeOldFiles.set(true)
+    }
+
+    generateParser {
+        sourceFile.set(file("src/grammars/GraphQLParser.bnf"))
+        targetRoot.set("gen")
+        pathToParser.set("com/intellij/lang/jsgraphql/GraphQLParser.java")
+        pathToPsiRoot.set("com/intellij/lang/jsgraphql/psi")
+        purgeOldFiles.set(true)
     }
 }
 

@@ -10,20 +10,32 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.intellij.lang.jsgraphql.psi.GraphQLElementTypes.*;
 import com.intellij.lang.jsgraphql.psi.*;
 
-public class GraphQLOperationTypeImpl extends GraphQLElementImpl implements GraphQLOperationType {
+public class GraphQLNullabilityImpl extends GraphQLElementImpl implements GraphQLNullability {
 
-  public GraphQLOperationTypeImpl(ASTNode node) {
+  public GraphQLNullabilityImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull GraphQLVisitorBase visitor) {
-    visitor.visitOperationType(this);
+    visitor.visitNullability(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof GraphQLVisitorBase) accept((GraphQLVisitorBase)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @Nullable
+  public GraphQLListNullability getListNullability() {
+    return findChildByClass(GraphQLListNullability.class);
+  }
+
+  @Override
+  @Nullable
+  public GraphQLNullabilityDesignator getNullabilityDesignator() {
+    return findChildByClass(GraphQLNullabilityDesignator.class);
   }
 
 }

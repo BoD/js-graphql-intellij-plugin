@@ -12,7 +12,7 @@ import com.intellij.lang.jsgraphql.psi.*;
 
 public class GraphQLFieldImpl extends GraphQLFieldMixin implements GraphQLField {
 
-  public GraphQLFieldImpl(@NotNull ASTNode node) {
+  public GraphQLFieldImpl(ASTNode node) {
     super(node);
   }
 
@@ -36,6 +36,12 @@ public class GraphQLFieldImpl extends GraphQLFieldMixin implements GraphQLField 
   @Nullable
   public GraphQLArguments getArguments() {
     return findChildByClass(GraphQLArguments.class);
+  }
+
+  @Override
+  @Nullable
+  public GraphQLNullability getNullability() {
+    return findChildByClass(GraphQLNullability.class);
   }
 
   @Override

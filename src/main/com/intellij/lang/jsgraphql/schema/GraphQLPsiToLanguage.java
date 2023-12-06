@@ -192,6 +192,19 @@ public final class GraphQLPsiToLanguage {
         builder.directives(createDirectives(field.getDirectives()));
         builder.arguments(createArguments(field.getArguments()));
         builder.selectionSet(createSelectionSet(field.getSelectionSet()));
+        builder.nullability(createFieldNullability(field.getNullability()));
+        return checkNode(builder.build());
+    }
+
+
+    @Nullable
+    private Nullability createFieldNullability(@Nullable GraphQLNullability nullability) {
+        if (nullability == null) {
+            return null;
+        }
+        Nullability.Builder builder = Nullability.newFieldNullability();
+        addCommonData(builder, nullability);
+        builder.type(createType(nullability.getType()));
         return checkNode(builder.build());
     }
 

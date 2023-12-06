@@ -31,6 +31,7 @@
 
     // punctuation
     BANG="!"
+    QUESTION_MARK="?"
     DOLLAR="$"
     PAREN_L="("
     PAREN_R=")"
@@ -236,13 +237,19 @@ selection ::=
 
 private selection_recover ::= !('}' | root_tokens | selection)
 
-field ::= alias? identifier arguments? directives? selectionSet? {
+field ::= alias? identifier arguments? nullability? directives? selectionSet? {
   methods=[directives="directive" nameIdentifier="identifier"]
   implements="com.intellij.lang.jsgraphql.psi.GraphQLDirectivesAware"
   mixin="com.intellij.lang.jsgraphql.psi.impl.GraphQLFieldMixin"
 }
 
 alias ::= identifier ':'
+
+nullability ::= (listNullability nullabilityDesignator?) | nullabilityDesignator
+
+listNullability ::= BRACKET_L nullability? BRACKET_R
+
+nullabilityDesignator ::= BANG | QUESTION_MARK
 
 fragmentSelection ::= '...' (fragmentSpread | inlineFragment) {pin=1}
 
